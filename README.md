@@ -60,6 +60,7 @@ Users can add their own JSON language files in the `Lang_data` directory, as lon
 ## Feedback & Issues
 For any feedback or issues, please contact me:
 [Discord me](https://discord.gg/pGcSyr2bcY)
+
 Thank you for using Lang_custom
 
 ![Thank You](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
