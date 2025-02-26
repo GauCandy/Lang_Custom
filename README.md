@@ -34,7 +34,7 @@ Where `name` is the group you want to access in the JSON structure.
 ### 4. Retrieve text data
 After selecting a group, retrieve text using:
 ```python
-text = lang_custom.get_text("en.json", "text")
+text = lang_custom.get_text("en", "text")
 print(text)  # Displays the corresponding value for key "text" in group "name" from en.json
 ```
 Where:
