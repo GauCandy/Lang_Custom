@@ -62,4 +62,4 @@ For any feedback or issues, please contact me:
 [Discord me](https://discord.gg/pGcSyr2bcY)
 
 Thanks for supporting me by using the library
-![Thank You](https://github.com/GauCandy/WhiteCat/blob/main/cat.png)
+![Thank You](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
