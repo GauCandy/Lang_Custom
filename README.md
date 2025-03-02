@@ -60,7 +60,7 @@ lang_custom.lang("en").group("bot_random", cache=True)
 Trong đó:
 - `"en"` là ngôn ngữ bạn muốn sử dụng.
 - `"bot_random"` là nhóm bạn muốn truy cập trong cấu trúc JSON.
-- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn (nhược điểm không cập nhập nóng được mặc định nếu bạn không đề cập là `True`).
+- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn (nhược điểm không cập nhật nóng được, mặc định nếu bạn không đề cập là `True`). Bạn phải sử dụng phương thức `reload` để cập nhật lại nếu muốn.
 
 ### 4. Lấy dữ liệu văn bản
 Sau khi chọn ngôn ngữ và nhóm, bạn có thể lấy văn bản bằng cách sử dụng:
@@ -84,6 +84,13 @@ console example
 ```
 text1 or text2 or 3
 ```
+
+### 5. Xóa và cập nhật lại cache
+Nếu bạn muốn xóa và cập nhật lại tất cả cache, bạn có thể sử dụng phương thức `reload`:
+```python
+lang_custom.reload()
+```
+Phương thức này sẽ xóa toàn bộ cache và cập nhật lại dữ liệu từ các tệp JSON.
 
 ## Cấu trúc tệp ngôn ngữ
 Mỗi tệp ngôn ngữ được lưu trong thư mục `Lang_Custom` (bản dịch mặc định) hoặc `Lang_data` (bản dịch do người dùng thêm vào). Ví dụ về `Lang_Custom/en.json`:
