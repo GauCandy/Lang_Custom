@@ -1,81 +1,4 @@
-# Lang Custom
-
-Lang Custom is a simple Python library for managing and loading translations from JSON files.
-
-## Why did I create Lang Custom?
-
-One day, I decided to make my bot support multiple languages. However, when searching for translation libraries, I realized that most of them were quite bad. So, I decided to create my own language files with customizable tone.
-
-At first, managing language files seemed simple, but then I realized that without a proper library, things became messy. Even though they were all JSON files, different code sections loaded language data in different ways—especially if you used AI tools like ChatGPT for assistance. There was no universal standard.
-
-Looking back at my code, I could only exclaim: **"Oh my god, this looks horrible!"** I wasn’t sure if my code was working as intended, and every time I made changes, I feared that while some parts would still work fine, others might crash due to inconsistent handling.
-
-That's why I created **Lang Custom**—a library to help manage language systems more easily, consistently, and without the headaches.
-
-## Installation
-
-You can install this library using pip:
-```sh
-pip install lang_custom
-```
-
-## Usage Guide
-
-### 1. Import the library
-```python
-import lang_custom
-```
-
-### 2. Get available language files
-The library will automatically detect all JSON language files stored in the `Lang_data` directory inside your source code. To list all available language files, use:
-```python
-languages = lang_custom.get()
-print(languages)  #example: en,vi,.. depending on the number of json files in the Lang_Data folder
-```
-Where each item represents a JSON file found in the language directories.
-
-### 3. Select a data group
-Before retrieving text, you need to select a data group from the JSON file:
-```python
-lang_custom.set_group("name")
-```
-Where `name` is the group you want to access in the JSON structure.
-
-### 4. Retrieve text data
-After selecting a group, retrieve text using:
-```python
-text = lang_custom.get_text("en", "text")
-print(text)  # Displays the corresponding value for key "text" in group "name" from en.json
-```
-Where:
-- `"en.json"` is the file name of the language you want to use.
-- `"text"` is the key to retrieve within the selected group.
-
-## Language File Structure
-Each language file is stored in either the `Lang_Custom` directory (default translations) or `Lang_data` (user-added translations). Example of `Lang_Custom/en.json`:
-```json
-{
-    "name": {
-        "text": "hello friend :D",
-        "example": "text2"
-    },
-    "name2": {
-        "example": "text",
-        "example2": "text2"
-    }
-}
-```
-Users can add their own JSON language files in the `Lang_data` directory, as long as they follow the correct structure.
-
-## Feedback & Issues
-For any feedback or issues, please contact me:
-[Discord me](https://discord.gg/pGcSyr2bcY)
-
-Thank you for using Lang_custom
-
-![Thank You](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
-
-# Lang Custom
+# Lang Custom v1.0.11
 
 Lang Custom là một thư viện Python đơn giản giúp quản lý và tải bản dịch từ các tệp JSON.
 
@@ -95,6 +18,18 @@ Bạn có thể cài đặt thư viện này bằng pip:
 ```sh
 pip install lang_custom
 ```
+## Có gì mới
+
+Sửa lại logic:
+cũ
+```python
+lang_custom.set_group("name")
+lang_custom.get_text("en", "text")
+```
+thành giúp dễ dàng kiểm soát hơn
+```python
+lang_custom.lang("en").group("name").get_text("text")
+```
 
 ## Hướng dẫn sử dụng
 
@@ -109,36 +44,58 @@ Thư viện sẽ tự động phát hiện tất cả các tệp JSON trong thư
 languages = lang_custom.get()
 print(languages)  # Ví dụ: en,vi,.. tùy vào số lượng file json trong thư mục Lang_Data
 ```
+
+console example
+```
+en,vi,jp
+```
+
 Mỗi phần tử trong danh sách đại diện cho một tệp JSON có trong thư mục ngôn ngữ.
 
-### 3. Chọn nhóm dữ liệu
-Trước khi lấy dữ liệu văn bản, bạn cần chọn một nhóm dữ liệu từ tệp JSON:
+### 3. Chọn ngôn ngữ và nhóm dữ liệu
+Trước khi lấy dữ liệu văn bản, bạn cần chọn ngôn ngữ và nhóm dữ liệu từ tệp JSON:
 ```python
-lang_custom.set_group("name")
-```
-Trong đó `name` là nhóm bạn muốn truy cập trong cấu trúc JSON.
-
-### 4. Lấy dữ liệu văn bản
-Sau khi chọn nhóm, bạn có thể lấy văn bản bằng cách sử dụng:
-```python
-text = lang_custom.get_text("en", "text")
-print(text)  # Hiển thị giá trị tương ứng với khóa "text" trong nhóm "name" từ en.json
+lang_custom.lang("en").group("bot_random", cache=True)
 ```
 Trong đó:
-- `"en.json"` là tệp ngôn ngữ bạn muốn sử dụng.
-- `"text"` là khóa bạn muốn lấy trong nhóm đã chọn.
+- `"en"` là ngôn ngữ bạn muốn sử dụng.
+- `"bot_random"` là nhóm bạn muốn truy cập trong cấu trúc JSON.
+- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn nhược điểm không cập nhập nóng được (mặc định là `True`).
+
+### 4. Lấy dữ liệu văn bản
+Sau khi chọn ngôn ngữ và nhóm, bạn có thể lấy văn bản bằng cách sử dụng:
+```python
+text = lang_custom.lang("en").group("bot_reply", cache=True).get_text("text1")
+print(text)  # Hiển thị giá trị tương ứng với khóa "text1" trong nhóm "bot_random" từ en.json
+```
+
+console example
+```
+hello :D
+```
+
+Hoặc lấy văn bản ngẫu nhiên từ danh sách:
+```python
+random_text = lang_custom.lang("en").group("bot_random").random_text("text_random")
+print(random_text)  # Hiển thị một giá trị ngẫu nhiên từ danh sách "text_random" trong nhóm "bot_random" từ en.json
+```
+
+console example
+```
+text1 or text2 or 3
+```
 
 ## Cấu trúc tệp ngôn ngữ
 Mỗi tệp ngôn ngữ được lưu trong thư mục `Lang_Custom` (bản dịch mặc định) hoặc `Lang_data` (bản dịch do người dùng thêm vào). Ví dụ về `Lang_Custom/en.json`:
 ```json
 {
-    "name": {
-        "text": "hello friend :D",
-        "example": "text2"
+    "bot_reply": {
+        "text1": "hello :D",
+        "text2": "hi :3"
     },
-    "name2": {
-        "example": "text",
-        "example2": "text2"
+    "bot_random": {
+        "instruct": "use square brackets to random",
+        "text_random": ["text1", "text2", "text.."]
     }
 }
 ```
