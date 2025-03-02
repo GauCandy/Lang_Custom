@@ -60,7 +60,7 @@ lang_custom.lang("en").group("bot_random", cache=True)
 Trong đó:
 - `"en"` là ngôn ngữ bạn muốn sử dụng.
 - `"bot_random"` là nhóm bạn muốn truy cập trong cấu trúc JSON.
-- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn nhược điểm không cập nhập nóng được (mặc định là `True`).
+- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn (nhược điểm không cập nhập nóng được mặc định nếu bạn không đề cập là `True`).
 
 ### 4. Lấy dữ liệu văn bản
 Sau khi chọn ngôn ngữ và nhóm, bạn có thể lấy văn bản bằng cách sử dụng:
