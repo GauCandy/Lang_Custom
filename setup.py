@@ -6,10 +6,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="lang_custom",
-    version="1.0.9",
+    version="1.0.14",
     author="Gấu Kẹo",
-    author_email="you@example.com",
-    description="Mô tả ngắn gọn về thư viện",
+    author_email="gaulolipop@gmail.com",
+    description="A simple language manager for Python projects.",
     long_description=long_description,
     long_description_content_type="text/markdown", 
     url="https://github.com/GauCandy/lang_custom",
