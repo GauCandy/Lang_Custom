@@ -1,5 +1,125 @@
 # Lang Custom v1.0.11
 
+Lang Custom is a simple Python library that helps manage and load translations from JSON files.
+
+## Why did I create Lang Custom?
+
+One day, I decided to make my bot support multiple languages. However, when searching for translation libraries, I realized that most of them were quite bad. So, I decided to create my own language files with customizable tones.
+
+Initially, managing language files seemed simple, but then I realized that without a standard library, everything became very messy. Even though they were all JSON files, different code segments loaded language data in their own way—especially if you use AI tools like ChatGPT for assistance. There was no common standard.
+
+Looking back at my source code, I could only exclaim: **"It's amazing it doesn't crash :v"** I wasn't sure if my code was working as expected, and every time I made changes, I was always worried that some parts would still work fine, but others might encounter errors due to inconsistent handling.
+
+So, I created **Lang Custom**—a library that helps manage the language system more easily, consistently, and without headaches.
+
+## Installation
+
+You can install this library using pip:
+```sh
+pip install lang_custom
+```
+## What's new
+
+Updated logic:
+old
+```python
+lang_custom.set_group("name")
+lang_custom.get_text("en", "text")
+```
+to make it easier to control
+```python
+lang_custom.lang("en").group("name").get_text("text")
+```
+
+## Usage Guide
+
+### 1. Import the library
+```python
+import lang_custom
+```
+
+### 2. Get the list of available language files
+The library will automatically detect all JSON files in the `Lang_data` directory in your source code. To list the available language files, use:
+```python
+languages = lang_custom.get()
+print(languages)  # Example: en,vi,.. depending on the number of JSON files in the Lang_Data directory
+```
+
+console example
+```
+en,vi,jp
+```
+
+Each element in the list represents a JSON file in the language directory.
+
+### 3. Select language and data group
+Before retrieving text data, you need to select a language and data group from the JSON file:
+```python
+lang_custom.lang("en").group("bot_random", cache=True)
+```
+Where:
+- `"en"` is the language you want to use.
+- `"bot_random"` is the group you want to access in the JSON structure.
+- `cache=True` is an option to use cache to help the bot retrieve data faster (the downside is that it does not update in real-time, the default if not specified is `True`). You must use the `reload` method to update if needed.
+
+### 4. Retrieve text data
+After selecting the language and group, you can retrieve the text using:
+```python
+text = lang_custom.lang("en").group("bot_reply", cache=True).get_text("text1")
+print(text)  # Displays the value corresponding to the key "text1" in the group "bot_random" from en.json
+```
+
+console example
+```
+hello :D
+```
+
+Or retrieve random text from a list:
+```python
+random_text = lang_custom.lang("en").group("bot_random").random_text("text_random")
+print(random_text)  # Displays a random value from the list "text_random" in the group "bot_random" from en.json
+```
+
+console example
+```
+text1 or text2 or 3
+```
+
+### 5. Clear and update cache
+If you want to clear and update all cache, you can use the `reload` method:
+```python
+lang_custom.reload()
+```
+This method will clear all cache and update data from the JSON files.
+
+## Language file structure
+Each language file is stored in the `Lang_Custom` directory (default translations) or `Lang_data` directory (user-added translations). Example of `Lang_Custom/en.json`:
+```json
+{
+    "bot_reply": {
+        "text1": "hello :D",
+        "text2": "hi :3"
+    },
+    "bot_random": {
+        "instruct": "use square brackets to random",
+        "text_random": ["text1", "text2", "text.."]
+    }
+}
+```
+Users can add their own language JSON files in the `Lang_data` directory, as long as they follow the valid structure.
+
+## Feedback & Issues
+If you have feedback or encounter issues, please contact me:
+[Discord me](https://discord.gg/pGcSyr2bcY)
+
+Thank you for using Lang_Custom!
+
+![Thank you](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
+
+
+
+# Lang Custom v1.0.11
+
 Lang Custom là một thư viện Python đơn giản giúp quản lý và tải bản dịch từ các tệp JSON.
 
 ## Tại sao tôi tạo ra Lang Custom?
