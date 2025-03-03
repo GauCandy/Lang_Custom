@@ -90,7 +90,7 @@ class LangManager:
     def get(self):
         files = os.listdir(self.lang_dir)
         langs = [f[:-5] for f in files if f.endswith(".json")]
-        return ",".join(langs)
+        return langs
 
     def reload(self):
         self.lang_cache.clear()
