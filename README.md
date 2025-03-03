@@ -42,12 +42,12 @@ import lang_custom
 The library will automatically detect all JSON files in the `Lang_data` directory in your source code. To list the available language files, use:
 ```python
 languages = lang_custom.get()
-print(languages)  # Example: en,vi,.. depending on the number of JSON files in the Lang_Data directory
+print(languages)  # Example: ['en', 'vi', 'jp',..] depending on the number of JSON files in the Lang_Data directory
 ```
 
 console example
 ```
-en,vi,jp
+['en', 'vi', 'jp']
 ```
 
 Each element in the list represents a JSON file in the language directory.
@@ -140,16 +140,19 @@ pip install lang_custom
 ```
 ## Có gì mới
 
-Sửa lại logic:
-cũ
+sửa lại cấu trúc xuất ra
 ```python
-lang_custom.set_group("name")
-lang_custom.get_text("en", "text")
+lang_custom.get() 
 ```
-thành giúp dễ dàng kiểm soát hơn
+phiên bản 1.0.12
 ```python
-lang_custom.lang("en").group("name").get_text("text")
+languages = lang_custom.get()
+print(languages)
 ```
+cosole sẽ có dạng
+```['en', 'vi', 'jp',..]```
+thay vì như 1.0.11
+```en,vi,jp,..```
 
 ## Hướng dẫn sử dụng
 
@@ -162,12 +165,12 @@ import lang_custom
 Thư viện sẽ tự động phát hiện tất cả các tệp JSON trong thư mục `Lang_data` trong mã nguồn của bạn. Để liệt kê các tệp ngôn ngữ có sẵn, sử dụng:
 ```python
 languages = lang_custom.get()
-print(languages)  # Ví dụ: en,vi,.. tùy vào số lượng file json trong thư mục Lang_Data
+print(languages)  # Ví dụ: ['en', 'vi', 'jp',..] tùy vào số lượng file json trong thư mục Lang_Data
 ```
 
 console example
 ```
-en,vi,jp
+['en', 'vi', 'jp']
 ```
 
 Mỗi phần tử trong danh sách đại diện cho một tệp JSON có trong thư mục ngôn ngữ.
