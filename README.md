@@ -1,4 +1,4 @@
-# Lang Custom v1.0.11
+# Lang Custom v1.0.14
 
 Lang Custom is a simple Python library that helps manage and load translations from JSON files.
 
@@ -20,16 +20,19 @@ pip install lang_custom
 ```
 ## What's new
 
-Updated logic:
-old
+Updated output structure:
 ```python
-lang_custom.set_group("name")
-lang_custom.get_text("en", "text")
+lang_custom.get() 
 ```
-to make it easier to control
+Version 1.0.14:
 ```python
-lang_custom.lang("en").group("name").get_text("text")
+languages = lang_custom.get()
+print(languages)
 ```
+Console output will be in the format:
+```['en', 'vi', 'jp',..]```
+instead of version 1.0.11:
+```en,vi,jp,..```
 
 ## Usage Guide
 
@@ -118,7 +121,7 @@ Thank you for using Lang_Custom!
 
 
 
-# Lang Custom v1.0.11
+# Lang Custom v1.0.14
 
 Lang Custom là một thư viện Python đơn giản giúp quản lý và tải bản dịch từ các tệp JSON.
 
@@ -140,18 +143,18 @@ pip install lang_custom
 ```
 ## Có gì mới
 
-sửa lại cấu trúc xuất ra
+Sửa lại cấu trúc xuất ra:
 ```python
 lang_custom.get() 
 ```
-phiên bản 1.0.12
+Phiên bản 1.0.14:
 ```python
 languages = lang_custom.get()
 print(languages)
 ```
-cosole sẽ có dạng
+Console sẽ có dạng:
 ```['en', 'vi', 'jp',..]```
-thay vì như 1.0.11
+thay vì như 1.0.11:
 ```en,vi,jp,..```
 
 ## Hướng dẫn sử dụng
