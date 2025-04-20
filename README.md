@@ -1,245 +1,215 @@
-# Lang Custom v1.0.14
-
-Lang Custom is a simple Python library that helps manage and load translations from JSON files.
-
-## Why did I create Lang Custom?
-
-One day, I decided to make my bot support multiple languages. However, when searching for translation libraries, I realized that most of them were quite bad. So, I decided to create my own language files with customizable tones.
-
-Initially, managing language files seemed simple, but then I realized that without a standard library, everything became very messy. Even though they were all JSON files, different code segments loaded language data in their own way—especially if you use AI tools like ChatGPT for assistance. There was no common standard.
-
-Looking back at my source code, I could only exclaim: **"It's amazing it doesn't crash :v"** I wasn't sure if my code was working as expected, and every time I made changes, I was always worried that some parts would still work fine, but others might encounter errors due to inconsistent handling.
-
-So, I created **Lang Custom**—a library that helps manage the language system more easily, consistently, and without headaches.
-
-## Installation
-
-You can install this library using pip:
-```sh
+Lang Custom v1.0.15
+Lang Custom is a Python library designed to manage and load translations from JSON files, now powered by SQLite for blazing-fast performance and reduced memory usage. Say goodbye to messy JSON parsing and hello to a standardized, headache-free language system!
+Why did I create Lang Custom?
+One day, I decided to make my bot support multiple languages. I scoured the internet for translation libraries, but most were... well, not great. So, I set out to create my own language files with customizable tones.
+At first, managing JSON files seemed simple. But without a proper library, things got chaotic. Every code segment loaded language data differently—especially when AI tools like ChatGPT got involved. No standard, no consistency. Looking at my old code, I could only say: "It's a miracle it didn't crash :v"
+I was never sure if my code worked as intended, and every change felt like playing Russian roulette. Some parts worked, others broke due to inconsistent handling. So, I created Lang Custom—a library that makes language management easy, consistent, and actually reliable.
+With v1.0.15, we’ve taken it to the next level by integrating SQLite to store language data, making it perfect for large-scale bots or applications. No more loading JSON files into memory every time—query a database and save your RAM!
+Installation
+Install the library using pip:
 pip install lang_custom
-```
-## What's new
 
-Updated output structure:
-```python
-lang_custom.get() 
-```
-Version 1.0.14:
-```python
-languages = lang_custom.get()
-print(languages)
-```
-Console output will be in the format:
-```['en', 'vi', 'jp',..]```
-instead of version 1.0.11:
-```en,vi,jp,..```
+Note: This version is not backward compatible with v1.0.14 or earlier due to major changes in the API and database integration. Upgrade with caution!
+What's New in v1.0.15
 
-## Usage Guide
+SQLite Backend: Language data is now stored in an SQLite database (lang_custom/database/language.db) instead of being parsed from JSON files every time. This reduces memory usage and speeds up data retrieval, especially for large bots.
+New API:
+language_setup(): Initializes the SQLite database, clears all existing tables, and loads data from JSON files in import_language/.
+get(language, group, type, name): Retrieves data from SQLite. type can be "text" (fixed string) or "random" (random choice from a list).
+get_lang(): Returns a list of supported languages (e.g., ['en', 'vi', 'jp']).
 
-### 1. Import the library
-```python
+
+Improved Error Handling: Returns None for invalid language, group, or name. Warns on console for invalid type (must be "text" or "random").
+Breaking Changes: Old methods like lang(), group(), get_text(), and random_text() are gone. Update your code to use the new get() API.
+
+Usage Guide
+1. Import the library
 import lang_custom
-```
 
-### 2. Get the list of available language files
-The library will automatically detect all JSON files in the `Lang_data` directory in your source code. To list the available language files, use:
-```python
-languages = lang_custom.get()
-print(languages)  # Example: ['en', 'vi', 'jp',..] depending on the number of JSON files in the Lang_Data directory
-```
+2. Initialize the database
+Before using the library, call language_setup() in your main script to set up the SQLite database and load data from JSON files in the import_language/ directory:
+lang_custom.language_setup()
 
-console example
-```
-['en', 'vi', 'jp']
-```
+This creates:
 
-Each element in the list represents a JSON file in the language directory.
+import_language/ directory with a default en.json if no JSON files exist.
+lang_custom/database/language.db with tables for each language (e.g., en, vi).
+Clears all existing tables and reloads data from JSON files.
 
-### 3. Select language and data group
-Before retrieving text data, you need to select a language and data group from the JSON file:
-```python
-lang_custom.lang("en").group("bot_random", cache=True)
-```
-Where:
-- `"en"` is the language you want to use.
-- `"bot_random"` is the group you want to access in the JSON structure.
-- `cache=True` is an option to use cache to help the bot retrieve data faster (the downside is that it does not update in real-time, the default if not specified is `True`). You must use the `reload` method to update if needed.
+Note: Call language_setup() only once in your main script. Sub-modules can use get() or get_lang() without re-initializing.
+3. Get the list of supported languages
+To see available languages (based on JSON files or SQLite tables):
+languages = lang_custom.get_lang()
+print(languages)  # Example: ['en', 'vi', 'jp']
 
-### 4. Retrieve text data
-After selecting the language and group, you can retrieve the text using:
-```python
-text = lang_custom.lang("en").group("bot_reply", cache=True).get_text("text1")
-print(text)  # Displays the value corresponding to the key "text1" in the group "bot_random" from en.json
-```
+4. Retrieve language data
+Use get(language, group, type, name) to fetch data from SQLite:
 
-console example
-```
-hello :D
-```
+language: Name of the language (e.g., "en", "vi").
+group: Data group in the JSON structure (e.g., "reply", "error").
+type: "text" for a fixed string or "random" for a random item from a list.
+name: Key within the group (e.g., "greeting", "greetings").
 
-Or retrieve random text from a list:
-```python
-random_text = lang_custom.lang("en").group("bot_random").random_text("text_random")
-print(random_text)  # Displays a random value from the list "text_random" in the group "bot_random" from en.json
-```
+Examples:
+# Get a fixed text
+text = lang_custom.get(language="en", group="error", type="text", name="not_found")
+print(text)  # Output: Resource not found
 
-console example
-```
-text1 or text2 or 3
-```
+# Get a random text from a list
+random_text = lang_custom.get(language="en", group="reply", type="random", name="greetings")
+print(random_text)  # Output: hello :D or hi :3 or hey there!
 
-### 5. Clear and update cache
-If you want to clear and update all cache, you can use the `reload` method:
-```python
-lang_custom.reload()
-```
-This method will clear all cache and update data from the JSON files.
+If language, group, or name doesn’t exist, or if type is invalid (not "text" or "random"), it returns None. Invalid type also triggers a console warning:
+lang_custom/language_loader.py:XXX: UserWarning: Invalid type: test. Must be 'text' or 'random'
 
-## Language file structure
-Each language file is stored in the `Lang_Custom` directory (default translations) or `Lang_data` directory (user-added translations). Example of `Lang_Custom/en.json`:
-```json
+5. File structure
+Language files are stored in import_language/ (user-added translations). Example import_language/en.json:
 {
-    "bot_reply": {
-        "text1": "hello :D",
-        "text2": "hi :3"
+    "reply": {
+        "text": {
+            "greeting": "hello :D",
+            "welcome": "hi :3"
+        },
+        "random": {
+            "greetings": ["hello :D", "hi :3", "hey there!"]
+        }
     },
-    "bot_random": {
-        "instruct": "use square brackets to random",
-        "text_random": ["text1", "text2", "text.."]
+    "error": {
+        "text": {
+            "not_found": "Resource not found",
+            "invalid": "Invalid input"
+        },
+        "random": {
+            "errors": ["Oops, something went wrong!", "Uh-oh, try again!"]
+        }
     }
 }
-```
-Users can add their own language JSON files in the `Lang_data` directory, as long as they follow the valid structure.
 
-## Feedback & Issues
-If you have feedback or encounter issues, please contact me:
-[Discord me](https://discord.gg/pGcSyr2bcY)
+Add your own JSON files (e.g., vi.json, jp.json) to import_language/ with the same structure. Run language_setup() to load them into SQLite.
+Performance Benefits
 
-Thank you for using Lang_Custom!
+SQLite Storage: Language data is stored in lang_custom/database/language.db, reducing memory usage compared to parsing JSON files repeatedly.
+Fast Queries: SQLite queries are faster than JSON parsing, especially for large datasets or frequent access.
+Single Initialization: language_setup() loads data once, and sub-modules query the database directly.
 
-![Thank you](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
+Compatibility
+v1.0.15 is not backward compatible with v1.0.14 or earlier due to:
 
+New SQLite-based architecture.
+Replaced lang(), group(), get_text(), random_text() with get().
+Removed caching mechanism (SQLite handles performance).
 
+Update your code to use the new API. Check the Usage Guide for details.
+Feedback & Issues
+Found a bug or have feedback? Reach out to me:[Discord me](https://discord.gg/pGcSyr2bcY)
+Thank you for using Lang Custom! 🚀
+![thank you](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
 
-# Lang Custom v1.0.14
-
-Lang Custom là một thư viện Python đơn giản giúp quản lý và tải bản dịch từ các tệp JSON.
-
-## Tại sao tôi tạo ra Lang Custom?
-
-Một ngày nọ, tôi quyết định làm cho bot của mình hỗ trợ nhiều ngôn ngữ. Tuy nhiên, khi tìm kiếm các thư viện dịch thuật, tôi nhận ra rằng hầu hết chúng đều khá tệ. Vì vậy, tôi quyết định tự tạo các tệp ngôn ngữ với ngữ điệu có thể tùy chỉnh.
-
-Ban đầu, việc quản lý các tệp ngôn ngữ có vẻ đơn giản, nhưng sau đó tôi nhận ra rằng nếu không có một thư viện chuẩn, mọi thứ trở nên rất lộn xộn. Dù tất cả đều là tệp JSON, nhưng các đoạn mã khác nhau lại tải dữ liệu ngôn ngữ theo cách riêng—đặc biệt nếu bạn dùng các công cụ AI như ChatGPT để hỗ trợ. Không có một tiêu chuẩn chung nào cả.
-
-Nhìn lại mã nguồn của mình, tôi chỉ có thể thốt lên: **"Tởm vl nó ko crash được cũng hay đấy :v"** không chắc liệu đoạn mã của mình có hoạt động đúng như mong muốn không, và mỗi khi chỉnh sửa, lúc nào cũng lo sợ rằng một số phần vẫn hoạt động tốt, nhưng những phần khác có thể gặp lỗi do xử lý không đồng nhất.
-
-Vì vậy, tôi đã tạo ra **Lang Custom**—một thư viện giúp quản lý hệ thống ngôn ngữ dễ dàng hơn, nhất quán hơn và không còn gây đau đầu nữa.
-
-## Cài đặt
-
-Bạn có thể cài đặt thư viện này bằng pip:
-```sh
+Lang Custom v1.0.15 (Vietnamese)
+Lang Custom là một thư viện Python giúp quản lý và tải bản dịch từ các tệp JSON, giờ đây sử dụng SQLite để đạt hiệu suất cao và giảm tiêu tốn bộ nhớ. Tạm biệt việc parse JSON lằng nhằng và chào đón một hệ thống ngôn ngữ chuẩn hóa, không còn đau đầu!
+Tại sao tôi tạo ra Lang Custom?
+Một ngày nọ, tôi muốn bot của mình hỗ trợ nhiều ngôn ngữ. Tôi đã tìm kiếm các thư viện dịch thuật, nhưng phần lớn đều... tệ vl. Thế là tôi quyết định tự tạo các tệp ngôn ngữ với ngữ điệu tùy chỉnh.
+Ban đầu, quản lý tệp JSON có vẻ dễ. Nhưng không có thư viện chuẩn, mọi thứ trở nên hỗn loạn. Mỗi đoạn mã tải dữ liệu ngôn ngữ theo cách riêng—đặc biệt khi dùng AI như ChatGPT hỗ trợ. Chẳng có tiêu chuẩn chung nào. Nhìn lại mã cũ, tôi chỉ biết thốt lên: "Tởm vl, nó không crash cũng hay đấy :v"
+Tôi không chắc mã của mình có chạy đúng không, và mỗi lần chỉnh sửa là một lần chơi "may rủi". Một số phần chạy tốt, nhưng phần khác có thể lỗi do xử lý không đồng nhất. Vì thế, tôi tạo ra Lang Custom—thư viện giúp quản lý ngôn ngữ dễ dàng, nhất quán, và thực sự đáng tin.
+Với v1.0.15, chúng tôi nâng cấp bằng cách tích hợp SQLite để lưu dữ liệu ngôn ngữ, lý tưởng cho bot hoặc ứng dụng lớn. Không còn load JSON vào RAM nữa—truy vấn database và tiết kiệm tài nguyên!
+Cài đặt
+Cài đặt thư viện bằng pip:
 pip install lang_custom
-```
-## Có gì mới
 
-Sửa lại cấu trúc xuất ra:
-```python
-lang_custom.get() 
-```
-Phiên bản 1.0.14:
-```python
-languages = lang_custom.get()
-print(languages)
-```
-Console sẽ có dạng:
-```['en', 'vi', 'jp',..]```
-thay vì như 1.0.11:
-```en,vi,jp,..```
+Lưu ý: Phiên bản này không tương thích ngược với v1.0.14 hoặc cũ hơn do thay đổi lớn trong API và tích hợp database. Hãy cẩn thận khi nâng cấp!
+Có gì mới trong v1.0.15
 
-## Hướng dẫn sử dụng
+Backend SQLite: Dữ liệu ngôn ngữ được lưu trong database SQLite (lang_custom/database/language.db) thay vì parse từ JSON mỗi lần. Giảm sử dụng bộ nhớ và tăng tốc truy xuất, đặc biệt cho bot lớn.
+API mới:
+language_setup(): Khởi tạo database SQLite, xóa sạch tất cả bảng và tải dữ liệu từ tệp JSON trong import_language/.
+get(language, group, type, name): Lấy dữ liệu từ SQLite. type là "text" (chuỗi cố định) hoặc "random" (chọn ngẫu nhiên từ danh sách).
+get_lang(): Trả về danh sách ngôn ngữ hỗ trợ (ví dụ: ['en', 'vi', 'jp']).
 
-### 1. Nhập thư viện
-```python
+
+Xử lý lỗi cải tiến: Trả về None cho language, group, hoặc name không hợp lệ. Cảnh báo console cho type sai (phải là "text" hoặc "random").
+Thay đổi phá vỡ: Bỏ các phương thức cũ như lang(), group(), get_text(), random_text(). Cập nhật mã của bạn để dùng API get() mới.
+
+Hướng dẫn sử dụng
+1. Nhập thư viện
 import lang_custom
-```
 
-### 2. Lấy danh sách các tệp ngôn ngữ có sẵn
-Thư viện sẽ tự động phát hiện tất cả các tệp JSON trong thư mục `Lang_data` trong mã nguồn của bạn. Để liệt kê các tệp ngôn ngữ có sẵn, sử dụng:
-```python
-languages = lang_custom.get()
-print(languages)  # Ví dụ: ['en', 'vi', 'jp',..] tùy vào số lượng file json trong thư mục Lang_Data
-```
+2. Khởi tạo database
+Trước khi dùng thư viện, gọi language_setup() trong script chính để thiết lập database SQLite và tải dữ liệu từ tệp JSON trong thư mục import_language/:
+lang_custom.language_setup()
 
-console example
-```
-['en', 'vi', 'jp']
-```
+Hàm này:
 
-Mỗi phần tử trong danh sách đại diện cho một tệp JSON có trong thư mục ngôn ngữ.
+Tạo thư mục import_language/ và tệp en.json mặc định nếu không có tệp JSON nào.
+Tạo lang_custom/database/language.db với bảng cho mỗi ngôn ngữ (ví dụ: en, vi).
+Xóa sạch tất cả bảng hiện có và tải lại dữ liệu từ tệp JSON.
 
-### 3. Chọn ngôn ngữ và nhóm dữ liệu
-Trước khi lấy dữ liệu văn bản, bạn cần chọn ngôn ngữ và nhóm dữ liệu từ tệp JSON:
-```python
-lang_custom.lang("en").group("bot_random", cache=True)
-```
-Trong đó:
-- `"en"` là ngôn ngữ bạn muốn sử dụng.
-- `"bot_random"` là nhóm bạn muốn truy cập trong cấu trúc JSON.
-- `cache=True` là tùy chọn để sử dụng cache giúp bot truy xuất dữ liệu nhanh hơn (nhược điểm không cập nhật nóng được, mặc định nếu bạn không đề cập là `True`). Bạn phải sử dụng phương thức `reload` để cập nhật lại nếu muốn.
+Lưu ý: Chỉ gọi language_setup() một lần trong script chính. Các module con có thể dùng get() hoặc get_lang() mà không cần khởi tạo lại.
+3. Lấy danh sách ngôn ngữ hỗ trợ
+Để xem các ngôn ngữ có sẵn (dựa trên tệp JSON hoặc bảng SQLite):
+languages = lang_custom.get_lang()
+print(languages)  # Ví dụ: ['en', 'vi', 'jp']
 
-### 4. Lấy dữ liệu văn bản
-Sau khi chọn ngôn ngữ và nhóm, bạn có thể lấy văn bản bằng cách sử dụng:
-```python
-text = lang_custom.lang("en").group("bot_reply", cache=True).get_text("text1")
-print(text)  # Hiển thị giá trị tương ứng với khóa "text1" trong nhóm "bot_random" từ en.json
-```
+4. Lấy dữ liệu ngôn ngữ
+Dùng get(language, group, type, name) để lấy dữ liệu từ SQLite:
 
-console example
-```
-hello :D
-```
+language: Tên ngôn ngữ (ví dụ: "en", "vi").
+group: Nhóm dữ liệu trong cấu trúc JSON (ví dụ: "reply", "error").
+type: "text" cho chuỗi cố định hoặc "random" cho chọn ngẫu nhiên từ danh sách.
+name: Khóa trong nhóm (ví dụ: "greeting", "greetings").
 
-Hoặc lấy văn bản ngẫu nhiên từ danh sách:
-```python
-random_text = lang_custom.lang("en").group("bot_random").random_text("text_random")
-print(random_text)  # Hiển thị một giá trị ngẫu nhiên từ danh sách "text_random" trong nhóm "bot_random" từ en.json
-```
+Ví dụ:
+# Lấy chuỗi cố định
+text = lang_custom.get(language="en", group="error", type="text", name="not_found")
+print(text)  # Output: Resource not found
 
-console example
-```
-text1 or text2 or 3
-```
+# Lấy chuỗi ngẫu nhiên từ danh sách
+random_text = lang_custom.get(language="en", group="reply", type="random", name="greetings")
+print(random_text)  # Output: hello :D hoặc hi :3 hoặc hey there!
 
-### 5. Xóa và cập nhật lại cache
-Nếu bạn muốn xóa và cập nhật lại tất cả cache, bạn có thể sử dụng phương thức `reload`:
-```python
-lang_custom.reload()
-```
-Phương thức này sẽ xóa toàn bộ cache và cập nhật lại dữ liệu từ các tệp JSON.
+Nếu language, group, hoặc name không tồn tại, hoặc type không hợp lệ (không phải "text" hoặc "random"), hàm trả về None. type sai sẽ hiện cảnh báo trên console:
+lang_custom/language_loader.py:XXX: UserWarning: Invalid type: test. Must be 'text' or 'random'
 
-## Cấu trúc tệp ngôn ngữ
-Mỗi tệp ngôn ngữ được lưu trong thư mục `Lang_Custom` (bản dịch mặc định) hoặc `Lang_data` (bản dịch do người dùng thêm vào). Ví dụ về `Lang_Custom/en.json`:
-```json
+5. Cấu trúc tệp
+Tệp ngôn ngữ được lưu trong import_language/ (bản dịch do người dùng thêm). Ví dụ import_language/en.json:
 {
-    "bot_reply": {
-        "text1": "hello :D",
-        "text2": "hi :3"
+    "reply": {
+        "text": {
+            "greeting": "hello :D",
+            "welcome": "hi :3"
+        },
+        "random": {
+            "greetings": ["hello :D", "hi :3", "hey there!"]
+        }
     },
-    "bot_random": {
-        "instruct": "use square brackets to random",
-        "text_random": ["text1", "text2", "text.."]
+    "error": {
+        "text": {
+            "not_found": "Resource not found",
+            "invalid": "Invalid input"
+        },
+        "random": {
+            "errors": ["Oops, something went wrong!", "Uh-oh, try again!"]
+        }
     }
 }
-```
-Người dùng có thể thêm các tệp JSON ngôn ngữ của riêng mình trong thư mục `Lang_data`, miễn là tuân theo cấu trúc hợp lệ.
 
-## Phản hồi & Báo lỗi
-Nếu bạn có phản hồi hoặc gặp vấn đề, vui lòng liên hệ tôi:
-[Discord me](https://discord.gg/pGcSyr2bcY)
+Thêm tệp JSON của bạn (ví dụ: vi.json, jp.json) vào import_language/ với cấu trúc tương tự. Chạy language_setup() để tải chúng vào SQLite.
+Lợi ích hiệu suất
 
-Cảm ơn bạn đã sử dụng Lang_Custom!
+Lưu trữ SQLite: Dữ liệu ngôn ngữ được lưu trong lang_custom/database/language.db, giảm sử dụng bộ nhớ so với parse JSON liên tục.
+Truy vấn nhanh: Truy vấn SQLite nhanh hơn parse JSON, đặc biệt với dữ liệu lớn hoặc truy cập thường xuyên.
+Khởi tạo một lần: language_setup() tải dữ liệu một lần, các module con truy vấn database trực tiếp.
 
+Tương thích
+v1.0.15 không tương thích ngược với v1.0.14 hoặc cũ hơn do:
+
+Kiến trúc mới dựa trên SQLite.
+Thay lang(), group(), get_text(), random_text() bằng get().
+Bỏ cơ chế cache (SQLite đảm nhiệm hiệu suất).
+
+Cập nhật mã của bạn theo Hướng dẫn sử dụng.
+Phản hồi & Báo lỗi
+Gặp lỗi hoặc có ý kiến? Liên hệ tôi:[Discord me](https://discord.gg/pGcSyr2bcY)
+Cảm ơn bạn đã sử dụng Lang Custom! 🚀
 ![Cảm ơn](https://github.com/GauCandy/WhiteCat/blob/main/thank.gif)
 
 
