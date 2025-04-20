@@ -1,7 +1,4 @@
-from .lang_manager import LangManager
+from .language_loader import language_setup, get, get_lang
 
-lang_manager = LangManager()
-
-lang = lang_manager.lang
-get = lang_manager.get
-reload = lang_manager.reload
+# Export các hàm để sử dụng trực tiếp
+__all__ = ["language_setup", "get", "get_lang"]
