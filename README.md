@@ -1,4 +1,4 @@
-# Lang Custom v1.0.15
+# Lang Custom v1.1.0
 
 **Lang Custom** is a Python library designed to manage and load translations from JSON files, now powered by **SQLite** for blazing-fast performance and reduced memory usage. Say goodbye to messy JSON parsing and hello to a standardized, headache-free language system!
 
@@ -10,7 +10,7 @@ At first, managing JSON files seemed simple. But without a proper library, thing
 
 I was never sure if my code worked as intended, and every change felt like playing Russian roulette. Some parts worked, others broke due to inconsistent handling. So, I created **Lang Custom**—a library that makes language management easy, consistent, and *actually reliable*.
 
-With **v1.0.15**, we’ve taken it to the next level by integrating **SQLite** to store language data, making it perfect for large-scale bots or applications. No more loading JSON files into memory every time—query a database and save your RAM!
+With **v1.1.0**, we’ve taken it to the next level by integrating **SQLite** to store language data, making it perfect for large-scale bots or applications. No more loading JSON files into memory every time—query a database and save your RAM!
 
 ## Installation
 
@@ -21,7 +21,7 @@ pip install lang_custom
 
 **Note**: This version is **not backward compatible** with v1.0.14 or earlier due to major changes in the API and database integration. Upgrade with caution!
 
-## What's New in v1.0.15
+## What's New in v1.1.0
 
 - **SQLite Backend**: Language data is now stored in an SQLite database (`lang_custom/database/language.db`) instead of being parsed from JSON files every time. This reduces memory usage and speeds up data retrieval, especially for large bots.
 - **New API**:
@@ -114,7 +114,7 @@ Add your own JSON files (e.g., `vi.json`, `jp.json`) to `import_language/` with 
 - **Single Initialization**: `language_setup()` loads data once, and sub-modules query the database directly.
 
 ## Compatibility
-**v1.0.15 is not backward compatible** with v1.0.14 or earlier due to:
+**v1.1.0 is not backward compatible** with v1.1.0 or earlier due to:
 - New SQLite-based architecture.
 - Replaced `lang()`, `group()`, `get_text()`, `random_text()` with `get()`.
 - Removed caching mechanism (SQLite handles performance).
@@ -131,7 +131,7 @@ Thank you for using Lang Custom! 🚀
 
 ---
 
-# Lang Custom v1.0.15 (Vietnamese)
+# Lang Custom v1.1.0 (Vietnamese)
 
 **Lang Custom** là một thư viện Python giúp quản lý và tải bản dịch từ các tệp JSON, giờ đây sử dụng **SQLite** để đạt hiệu suất cao và giảm tiêu tốn bộ nhớ. Tạm biệt việc parse JSON lằng nhằng và chào đón một hệ thống ngôn ngữ chuẩn hóa, không còn đau đầu!
 
@@ -143,7 +143,7 @@ Ban đầu, quản lý tệp JSON có vẻ dễ. Nhưng không có thư viện c
 
 Tôi không chắc mã của mình có chạy đúng không, và mỗi lần chỉnh sửa là một lần chơi "may rủi". Một số phần chạy tốt, nhưng phần khác có thể lỗi do xử lý không đồng nhất. Vì thế, tôi tạo ra **Lang Custom**—thư viện giúp quản lý ngôn ngữ dễ dàng, nhất quán, và *thực sự đáng tin*.
 
-Với **v1.0.15**, chúng tôi nâng cấp bằng cách tích hợp **SQLite** để lưu dữ liệu ngôn ngữ, lý tưởng cho bot hoặc ứng dụng lớn. Không còn load JSON vào RAM nữa—truy vấn database và tiết kiệm tài nguyên!
+Với **v1.1.0**, chúng tôi nâng cấp bằng cách tích hợp **SQLite** để lưu dữ liệu ngôn ngữ, lý tưởng cho bot hoặc ứng dụng lớn. Không còn load JSON vào RAM nữa—truy vấn database và tiết kiệm tài nguyên!
 
 ## Cài đặt
 
@@ -154,7 +154,7 @@ pip install lang_custom
 
 **Lưu ý**: Phiên bản này **không tương thích ngược** với v1.0.14 hoặc cũ hơn do thay đổi lớn trong API và tích hợp database. Hãy cẩn thận khi nâng cấp!
 
-## Có gì mới trong v1.0.15
+## Có gì mới trong v1.1.0
 
 - **Backend SQLite**: Dữ liệu ngôn ngữ được lưu trong database SQLite (`lang_custom/database/language.db`) thay vì parse từ JSON mỗi lần. Giảm sử dụng bộ nhớ và tăng tốc truy xuất, đặc biệt cho bot lớn.
 - **API mới**:
@@ -247,7 +247,7 @@ Thêm tệp JSON của bạn (ví dụ: `vi.json`, `jp.json`) vào `import_langu
 - **Khởi tạo một lần**: `language_setup()` tải dữ liệu một lần, các module con truy vấn database trực tiếp.
 
 ## Tương thích
-**v1.0.15 không tương thích ngược** với v1.0.14 hoặc cũ hơn do:
+**v1.1.0 không tương thích ngược** với v1.0.14 hoặc cũ hơn do:
 - Kiến trúc mới dựa trên SQLite.
 - Thay `lang()`, `group()`, `get_text()`, `random_text()` bằng `get()`.
 - Bỏ cơ chế cache (SQLite đảm nhiệm hiệu suất).
