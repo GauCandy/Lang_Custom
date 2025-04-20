@@ -1,16 +1,10 @@
-# Lang Custom v1.1.0
+# Lang Custom v1.1.1
 
-**Lang Custom** is a Python library designed to manage and load translations from JSON files, now powered by **SQLite** for blazing-fast performance and reduced memory usage. Say goodbye to messy JSON parsing and hello to a standardized, headache-free language system!
+**Lang Custom** is a Python library designed to manage and load translations from JSON files, powered by **SQLite** for blazing-fast performance and reduced memory usage. Say goodbye to messy JSON parsing and hello to a standardized, headache-free language system!
 
-## Why did I create Lang Custom?
+## Why Lang Custom?
 
-One day, I decided to make my bot support multiple languages. I scoured the internet for translation libraries, but most were... well, *not great*. So, I set out to create my own language files with customizable tones.
-
-At first, managing JSON files seemed simple. But without a proper library, things got **chaotic**. Every code segment loaded language data differently—especially when AI tools like ChatGPT got involved. No standard, no consistency. Looking at my old code, I could only say: **"It's a miracle it didn't crash :v"**
-
-I was never sure if my code worked as intended, and every change felt like playing Russian roulette. Some parts worked, others broke due to inconsistent handling. So, I created **Lang Custom**—a library that makes language management easy, consistent, and *actually reliable*.
-
-With **v1.1.0**, we’ve taken it to the next level by integrating **SQLite** to store language data, making it perfect for large-scale bots or applications. No more loading JSON files into memory every time—query a database and save your RAM!
+Lang Custom was born to simplify multilingual support for bots and applications. Managing translations can be chaotic without a proper system—scattered JSON files, inconsistent parsing, and no standardization. This library brings order with a clean API, SQLite-backed storage, and customizable language files. Whether you're building a small bot or a large-scale app, Lang Custom makes language management reliable and efficient.
 
 ## Installation
 
@@ -21,16 +15,6 @@ pip install lang_custom
 
 **Note**: This version is **not backward compatible** with v1.0.14 or earlier due to major changes in the API and database integration. Upgrade with caution!
 
-## What's New in v1.1.0
-
-- **SQLite Backend**: Language data is now stored in an SQLite database (`lang_custom/database/language.db`) instead of being parsed from JSON files every time. This reduces memory usage and speeds up data retrieval, especially for large bots.
-- **New API**:
-  - `language_setup()`: Initializes the SQLite database, clears all existing tables, and loads data from JSON files in `import_language/`.
-  - `get(language, group, type, name)`: Retrieves data from SQLite. `type` can be `"text"` (fixed string) or `"random"` (random choice from a list).
-  - `get_lang()`: Returns a list of supported languages (e.g., `['en', 'vi', 'jp']`).
-- **Improved Error Handling**: Returns `None` for invalid `language`, `group`, or `name`. Warns on console for invalid `type` (must be `"text"` or `"random"`).
-- **Breaking Changes**: Old methods like `lang()`, `group()`, `get_text()`, and `random_text()` are gone. Update your code to use the new `get()` API.
-
 ## Usage Guide
 
 ### 1. Import the library
@@ -39,17 +23,19 @@ import lang_custom
 ```
 
 ### 2. Initialize the database
-Before using the library, call `language_setup()` in your main script to set up the SQLite database and load data from JSON files in the `import_language/` directory:
+Call `language_setup()` in your main script to set up the SQLite database and load data from JSON files in the `import_language/` directory:
 ```python
 lang_custom.language_setup()
 ```
 
 This creates:
 - `import_language/` directory with a default `en.json` if no JSON files exist.
-- `lang_custom/database/language.db` with tables for each language (e.g., `en`, `vi`).
+- `data_language/DO_NOT_DELETE.db` with tables for each language (e.g., `en`, `vi`).
 - Clears all existing tables and reloads data from JSON files.
 
-**Note**: Call `language_setup()` only once in your main script. Sub-modules can use `get()` or `get_lang()` without re-initializing.
+**Important**: 
+- Only call `language_setup()` once in your main script. Sub-modules can use `get()` or `get_lang()` without re-initializing.
+- **Do not delete** the `data_language/` directory or `DO_NOT_DELETE.db` file, especially while your bot or application is running, as this will cause data loss and errors.
 
 ### 3. Get the list of supported languages
 To see available languages (based on JSON files or SQLite tables):
@@ -109,17 +95,21 @@ Language files are stored in `import_language/` (user-added translations). Examp
 Add your own JSON files (e.g., `vi.json`, `jp.json`) to `import_language/` with the same structure. Run `language_setup()` to load them into SQLite.
 
 ## Performance Benefits
-- **SQLite Storage**: Language data is stored in `lang_custom/database/language.db`, reducing memory usage compared to parsing JSON files repeatedly.
+- **SQLite Storage**: Language data is stored in `data_language/DO_NOT_DELETE.db`, reducing memory usage compared to parsing JSON files repeatedly.
 - **Fast Queries**: SQLite queries are faster than JSON parsing, especially for large datasets or frequent access.
 - **Single Initialization**: `language_setup()` loads data once, and sub-modules query the database directly.
 
 ## Compatibility
-**v1.1.0 is not backward compatible** with v1.1.0 or earlier due to:
+**v1.1.1 is not backward compatible** with v1.0.14 or earlier due to:
 - New SQLite-based architecture.
 - Replaced `lang()`, `group()`, `get_text()`, `random_text()` with `get()`.
 - Removed caching mechanism (SQLite handles performance).
 
 Update your code to use the new API. Check the [Usage Guide](#usage-guide) for details.
+
+## Important Notes
+- **Do not delete** the `data_language/` directory or `DO_NOT_DELETE.db` file while your bot or application is running. This file contains all language data, and deleting it will cause your application to fail.
+- If you need to reset the database, call `language_setup()` again, but be aware it will clear and reload all data from JSON files.
 
 ## Feedback & Issues
 Found a bug or have feedback? Reach out to me:
@@ -131,19 +121,13 @@ Thank you for using Lang Custom! 🚀
 
 ---
 
-# Lang Custom v1.1.0 (Vietnamese)
+# Lang Custom v1.1.1 (Vietnamese)
 
-**Lang Custom** là một thư viện Python giúp quản lý và tải bản dịch từ các tệp JSON, giờ đây sử dụng **SQLite** để đạt hiệu suất cao và giảm tiêu tốn bộ nhớ. Tạm biệt việc parse JSON lằng nhằng và chào đón một hệ thống ngôn ngữ chuẩn hóa, không còn đau đầu!
+**Lang Custom** là một thư viện Python giúp quản lý và tải bản dịch từ các tệp JSON, sử dụng **SQLite** để đạt hiệu suất cao và giảm tiêu tốn bộ nhớ. Tạm biệt việc parse JSON lằng nhằng và chào đón một hệ thống ngôn ngữ chuẩn hóa, không còn đau đầu!
 
-## Tại sao tôi tạo ra Lang Custom?
+## Tại sao dùng Lang Custom?
 
-Một ngày nọ, tôi muốn bot của mình hỗ trợ nhiều ngôn ngữ. Tôi đã tìm kiếm các thư viện dịch thuật, nhưng phần lớn đều... *tệ vl*. Thế là tôi quyết định tự tạo các tệp ngôn ngữ với ngữ điệu tùy chỉnh.
-
-Ban đầu, quản lý tệp JSON có vẻ dễ. Nhưng không có thư viện chuẩn, mọi thứ trở nên **hỗn loạn**. Mỗi đoạn mã tải dữ liệu ngôn ngữ theo cách riêng—đặc biệt khi dùng AI như ChatGPT hỗ trợ. Chẳng có tiêu chuẩn chung nào. Nhìn lại mã cũ, tôi chỉ biết thốt lên: **"Tởm vl, nó không crash cũng hay đấy :v"**
-
-Tôi không chắc mã của mình có chạy đúng không, và mỗi lần chỉnh sửa là một lần chơi "may rủi". Một số phần chạy tốt, nhưng phần khác có thể lỗi do xử lý không đồng nhất. Vì thế, tôi tạo ra **Lang Custom**—thư viện giúp quản lý ngôn ngữ dễ dàng, nhất quán, và *thực sự đáng tin*.
-
-Với **v1.1.0**, chúng tôi nâng cấp bằng cách tích hợp **SQLite** để lưu dữ liệu ngôn ngữ, lý tưởng cho bot hoặc ứng dụng lớn. Không còn load JSON vào RAM nữa—truy vấn database và tiết kiệm tài nguyên!
+Lang Custom ra đời để đơn giản hóa hỗ trợ đa ngôn ngữ cho bot và ứng dụng. Quản lý bản dịch có thể trở nên hỗn loạn nếu không có hệ thống chuẩn—tệp JSON rải rác, parse không đồng nhất, không có tiêu chuẩn. Thư viện này mang lại trật tự với API rõ ràng, lưu trữ bằng SQLite, và các tệp ngôn ngữ tùy chỉnh. Dù bạn xây dựng bot nhỏ hay ứng dụng lớn, Lang Custom giúp quản lý ngôn ngữ đáng tin cậy và hiệu quả.
 
 ## Cài đặt
 
@@ -154,16 +138,6 @@ pip install lang_custom
 
 **Lưu ý**: Phiên bản này **không tương thích ngược** với v1.0.14 hoặc cũ hơn do thay đổi lớn trong API và tích hợp database. Hãy cẩn thận khi nâng cấp!
 
-## Có gì mới trong v1.1.0
-
-- **Backend SQLite**: Dữ liệu ngôn ngữ được lưu trong database SQLite (`lang_custom/database/language.db`) thay vì parse từ JSON mỗi lần. Giảm sử dụng bộ nhớ và tăng tốc truy xuất, đặc biệt cho bot lớn.
-- **API mới**:
-  - `language_setup()`: Khởi tạo database SQLite, xóa sạch tất cả bảng và tải dữ liệu từ tệp JSON trong `import_language/`.
-  - `get(language, group, type, name)`: Lấy dữ liệu từ SQLite. `type` là `"text"` (chuỗi cố định) hoặc `"random"` (chọn ngẫu nhiên từ danh sách).
-  - `get_lang()`: Trả về danh sách ngôn ngữ hỗ trợ (ví dụ: `['en', 'vi', 'jp']`).
-- **Xử lý lỗi cải tiến**: Trả về `None` cho `language`, `group`, hoặc `name` không hợp lệ. Cảnh báo console cho `type` sai (phải là `"text"` hoặc `"random"`).
-- **Thay đổi phá vỡ**: Bỏ các phương thức cũ như `lang()`, `group()`, `get_text()`, `random_text()`. Cập nhật mã của bạn để dùng API `get()` mới.
-
 ## Hướng dẫn sử dụng
 
 ### 1. Nhập thư viện
@@ -172,17 +146,19 @@ import lang_custom
 ```
 
 ### 2. Khởi tạo database
-Trước khi dùng thư viện, gọi `language_setup()` trong script chính để thiết lập database SQLite và tải dữ liệu từ tệp JSON trong thư mục `import_language/`:
+Gọi `language_setup()` trong script chính để thiết lập database SQLite và tải dữ liệu từ tệp JSON trong thư mục `import_language/`:
 ```python
 lang_custom.language_setup()
 ```
 
 Hàm này:
 - Tạo thư mục `import_language/` và tệp `en.json` mặc định nếu không có tệp JSON nào.
-- Tạo `lang_custom/database/language.db` với bảng cho mỗi ngôn ngữ (ví dụ: `en`, `vi`).
+- Tạo `data_language/DO_NOT_DELETE.db` với bảng cho mỗi ngôn ngữ (ví dụ: `en`, `vi`).
 - Xóa sạch tất cả bảng hiện có và tải lại dữ liệu từ tệp JSON.
 
-**Lưu ý**: Chỉ gọi `language_setup()` một lần trong script chính. Các module con có thể dùng `get()` hoặc `get_lang()` mà không cần khởi tạo lại.
+**Quan trọng**:
+- Chỉ gọi `language_setup()` một lần trong script chính. Các module con có thể dùng `get()` hoặc `get_lang()` mà không cần khởi tạo lại.
+- **Không xóa** thư mục `data_language/` hoặc tệp `DO_NOT_DELETE.db`, đặc biệt khi bot hoặc ứng dụng đang chạy, vì sẽ gây mất dữ liệu và lỗi.
 
 ### 3. Lấy danh sách ngôn ngữ hỗ trợ
 Để xem các ngôn ngữ có sẵn (dựa trên tệp JSON hoặc bảng SQLite):
@@ -242,17 +218,21 @@ Tệp ngôn ngữ được lưu trong `import_language/` (bản dịch do ngư�
 Thêm tệp JSON của bạn (ví dụ: `vi.json`, `jp.json`) vào `import_language/` với cấu trúc tương tự. Chạy `language_setup()` để tải chúng vào SQLite.
 
 ## Lợi ích hiệu suất
-- **Lưu trữ SQLite**: Dữ liệu ngôn ngữ được lưu trong `lang_custom/database/language.db`, giảm sử dụng bộ nhớ so với parse JSON liên tục.
+- **Lưu trữ SQLite**: Dữ liệu ngôn ngữ được lưu trong `data_language/DO_NOT_DELETE.db`, giảm sử dụng bộ nhớ so với parse JSON liên tục.
 - **Truy vấn nhanh**: Truy vấn SQLite nhanh hơn parse JSON, đặc biệt với dữ liệu lớn hoặc truy cập thường xuyên.
 - **Khởi tạo một lần**: `language_setup()` tải dữ liệu một lần, các module con truy vấn database trực tiếp.
 
 ## Tương thích
-**v1.1.0 không tương thích ngược** với v1.0.14 hoặc cũ hơn do:
+**v1.1.1 không tương thích ngược** với v1.0.14 hoặc cũ hơn do:
 - Kiến trúc mới dựa trên SQLite.
 - Thay `lang()`, `group()`, `get_text()`, `random_text()` bằng `get()`.
 - Bỏ cơ chế cache (SQLite đảm nhiệm hiệu suất).
 
 Cập nhật mã của bạn theo [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng).
+
+## Lưu ý quan trọng
+- **Không xóa** thư mục `data_language/` hoặc tệp `DO_NOT_DELETE.db` khi bot hoặc ứng dụng đang chạy. Tệp này chứa toàn bộ dữ liệu ngôn ngữ, và xóa nó sẽ khiến ứng dụng lỗi.
+- Nếu cần reset database, gọi lại `language_setup()`, nhưng lưu ý hàm này sẽ xóa và tải lại toàn bộ dữ liệu từ tệp JSON.
 
 ## Phản hồi & Báo lỗi
 Gặp lỗi hoặc có ý kiến? Liên hệ tôi:

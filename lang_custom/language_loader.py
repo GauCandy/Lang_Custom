@@ -9,8 +9,8 @@ def language_setup(base_path=None):
     """Khởi tạo thư mục, file ngôn ngữ và database SQLite, xóa sạch tất cả bảng trước khi lưu."""
     base_path = Path(base_path) if base_path else Path.cwd()
     language_dir = base_path / "import_language"
-    db_dir = base_path / "lang_custom" / "database"
-    db_path = db_dir / "language.db"
+    db_dir = base_path / "data_language"
+    db_path = db_dir / "DO_NOT_DELETE.db"
     default_lang_file = language_dir / "en.json"
     default_data = {
         "reply": {
@@ -50,7 +50,7 @@ def language_setup(base_path=None):
             json.dump(default_data, f, indent=4, ensure_ascii=False)
         json_files = [default_lang_file]
 
-    # Tạo thư mục database nếu chưa tồn tại
+    # Tạo thư mục data_language nếu chưa tồn tại
     db_dir.mkdir(exist_ok=True)
 
     # Kết nối SQLite
@@ -110,7 +110,7 @@ def language_setup(base_path=None):
 def get(language="en", group=None, type=None, name=None):
     """Lấy dữ liệu từ database SQLite."""
     base_path = Path.cwd()
-    db_path = base_path / "lang_custom" / "database" / "language.db"
+    db_path = base_path / "data_language" / "DO_NOT_DELETE.db"
 
     # Kiểm tra database tồn tại
     if not db_path.exists():
@@ -162,7 +162,7 @@ def get(language="en", group=None, type=None, name=None):
 def get_lang():
     """Trả về danh sách các ngôn ngữ hỗ trợ từ database."""
     base_path = Path.cwd()
-    db_path = base_path / "lang_custom" / "database" / "language.db"
+    db_path = base_path / "data_language" / "DO_NOT_DELETE.db"
 
     if not db_path.exists():
         return []
