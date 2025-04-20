@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="lang_custom",
-    version="1.0.14",
+    version="1.0.15",
     author="Gấu Kẹo",
     author_email="gaulolipop@gmail.com",
     description="A simple language manager for Python projects.",
