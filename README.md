@@ -1,10 +1,10 @@
-# Lang Custom v1.1.2
+# Lang Custom v1.1.3
 
 **Lang Custom** is a Python library for managing translations from JSON files, powered by **SQLite** for fast queries and low memory usage. Perfect for bots or multilingual apps needing high performance and easy maintenance.
 
 ---
 
-## 🆕 What's New in v1.1.2?
+## 🆕 What's New in v1.1.3?
 
 * ✅ **Auto-initialization**: Database and JSON files are loaded on `import lang_custom`. No need for `language_setup()`.
 * ✅ Support for **full reload** or **single-language reload** from JSON.
@@ -19,7 +19,7 @@
 ## 📦 Installation
 
 ```bash
-pip install lang_custom==1.1.2
+pip install lang_custom==1.1.3
 ```
 
 ---
@@ -115,13 +115,13 @@ Thank you for using **Lang Custom**! 🚀
 
 ---
 
-# Lang Custom v1.1.2
+# Lang Custom v1.1.3
 
 **Lang Custom** là thư viện Python quản lý bản dịch từ tệp JSON, dùng **SQLite** để truy vấn nhanh và tiết kiệm bộ nhớ. Lý tưởng cho bot hoặc ứng dụng đa ngôn ngữ cần hiệu suất cao và dễ bảo trì.
 
 ---
 
-## 🆕 Có gì mới trong v1.1.2?
+## 🆕 Có gì mới trong v1.1.3?
 
 * ✅ **Tự động khởi tạo**: Database và JSON được load ngay khi `import lang_custom`. Không cần gọi `language_setup()`.
 * ✅ Hỗ trợ **reload toàn bộ** hoặc **reload một ngôn ngữ** từ JSON.
@@ -136,7 +136,7 @@ Thank you for using **Lang Custom**! 🚀
 ## 📦 Cài đặt
 
 ```bash
-pip install lang_custom==1.1.2
+pip install lang_custom==1.1.3
 ```
 
 ---
