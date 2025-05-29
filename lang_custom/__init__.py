@@ -1,4 +1,3 @@
-from .language_loader import language_setup, get, get_lang
+from .lang_custom import get, reload, reload_language, get_lang
 
-# Export các hàm để sử dụng trực tiếp
-__all__ = ["language_setup", "get", "get_lang"]
+__all__ = ["get", "reload", "get_lang", "reload_language"]

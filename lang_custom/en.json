@@ -1,0 +1,21 @@
+{
+    "reply": {
+        "text": {
+            "greeting": "hello :D",
+            "welcome": "hi :3"
+        },
+        "random": {
+            "greetings": [
+                "hello :D",
+                "hi :3",
+                "hey there!"
+            ]
+        }
+    },
+    "error": {
+        "text": {
+            "not_found": "Resource not found",
+            "invalid": "Invalid input"
+        }
+    }
+}
