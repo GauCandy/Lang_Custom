@@ -1,10 +1,10 @@
-# Lang Custom v1.1.5
+# Lang Custom v1.1.6
 
 **Lang Custom** is a Python library for managing translations from JSON files, powered by **SQLite** for fast queries and low memory usage. Perfect for bots or multilingual apps needing high performance and easy maintenance.
 
 ---
 
-## 🆕 What's New in v1.1.5?
+## 🆕 What's New in v1.1.6?
 
 * ✅ **Default Parameters**: Set default `language`, `group`, and `type` to simplify calls to `get` and `batch`:
   ```python
@@ -29,7 +29,7 @@
 ## 📦 Installation
 
 ```bash
-pip install lang_custom==1.1.4
+pip install lang_custom==1.1.6
 ```
 
 ---
@@ -156,13 +156,13 @@ Thank you for using **Lang Custom**! 🚀
 
 ---
 
-# Lang Custom v1.1.5
+# Lang Custom v1.1.6
 
 **Lang Custom** là thư viện Python quản lý bản dịch từ tệp JSON, dùng **SQLite** để truy vấn nhanh và tiết kiệm bộ nhớ. Lý tưởng cho bot hoặc ứng dụng đa ngôn ngữ cần hiệu suất cao và dễ bảo trì.
 
 ---
 
-## 🆕 Có gì mới trong v1.1.5?
+## 🆕 Có gì mới trong v1.1.6?
 
 * ✅ **Thiết lập mặc định**: Đặt `language`, `group`, và `type` mặc định để đơn giản hóa `get` và `batch`:
   ```python
@@ -187,7 +187,7 @@ Thank you for using **Lang Custom**! 🚀
 ## 📦 Cài đặt
 
 ```bash
-pip install lang_custom==1.1.4
+pip install lang_custom==1.1.6
 ```
 
 ---
