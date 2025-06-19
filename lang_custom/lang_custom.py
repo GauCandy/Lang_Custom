@@ -13,7 +13,6 @@ warnings.filterwarnings('always', category=UserWarning, append=True)
 
 DB_PATH = Path.cwd() / "_data_language" / "DO_NOT_DELETE.db"
 
-# Lưu trữ các giá trị mặc định
 _DEFAULTS = {
     "language": None,
     "group": None,
@@ -31,7 +30,7 @@ def ensure_default_language():
         if source_path.exists():
             shutil.copy(source_path, target_path)
         else:
-            raise FileNotFoundError(f"Không tìm thấy file en.json mẫu tại {source_path}")
+            raise FileNotFoundError(f"Default en.json file not found at {source_path}")
 
 def language_setup():
     conn = sqlite3.connect(DB_PATH)
@@ -214,18 +213,7 @@ async def has_language(language):
             return bool(await cursor.fetchone())
 
 async def default(language=None, group=None, type=None):
-    """
-    Thiết lập các giá trị mặc định cho language, group, và type.
-    Các giá trị None sẽ giữ nguyên giá trị mặc định hiện tại.
-
-    Args:
-        language (str, optional): Ngôn ngữ mặc định (ví dụ: 'vi').
-        group (str, optional): Nhóm mặc định (ví dụ: 'tos').
-        type (str, optional): Loại mặc định (ví dụ: 'text').
-
-    Returns:
-        None
-    """
+    """Set default values for language, group, and type."""
     if language is not None:
         _DEFAULTS["language"] = language
     if group is not None:
@@ -234,21 +222,7 @@ async def default(language=None, group=None, type=None):
         _DEFAULTS["type"] = type
 
 async def get(language=None, group=None, type=None, name=None):
-    """
-    Lấy giá trị ngôn ngữ từ cơ sở dữ liệu, sử dụng giá trị mặc định nếu không cung cấp.
-
-    Args:
-        language (str, optional): Ngôn ngữ (ví dụ: 'vi'). Nếu None, dùng giá trị mặc định.
-        group (str, optional): Nhóm (ví dụ: 'tos'). Nếu None, dùng giá trị mặc định.
-        type (str, optional): Loại ('text' hoặc 'random'). Nếu None, dùng giá trị mặc định.
-        name (str, optional): Tên giá trị (ví dụ: 'accept'). Bắt buộc nếu không có giá trị mặc định.
-
-    Returns:
-        str or None: Giá trị ngôn ngữ hoặc None nếu không tìm thấy.
-
-    Raises:
-        UserWarning: Nếu thiếu tham số cần thiết hoặc dữ liệu không tồn tại.
-    """
+    """Retrieve a language value from the database, using defaults if not provided."""
     params = {
         "language": language if language is not None else _DEFAULTS["language"],
         "group": group if group is not None else _DEFAULTS["group"],
@@ -257,16 +231,16 @@ async def get(language=None, group=None, type=None, name=None):
     }
 
     if params["language"] is None:
-        warnings.warn("Thiếu tham số 'language' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'language' parameter and no default value provided", UserWarning, stacklevel=2)
         return None
     if params["group"] is None:
-        warnings.warn("Thiếu tham số 'group' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'group' parameter and no default value provided", UserWarning, stacklevel=2)
         return None
     if params["type"] is None:
-        warnings.warn("Thiếu tham số 'type' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'type' parameter and no default value provided", UserWarning, stacklevel=2)
         return None
     if params["name"] is None:
-        warnings.warn("Thiếu tham số 'name'. Phải cung cấp 'name' để lấy giá trị", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'name' parameter. 'name' must be provided", UserWarning, stacklevel=2)
         return None
 
     async with aiosqlite.connect(DB_PATH) as db:
@@ -324,21 +298,7 @@ async def get(language=None, group=None, type=None, name=None):
             return rows[0][0] if params["type"] == "text" else random.choice([r[0] for r in rows])
 
 async def batch(language=None, group=None, type=None, names=None):
-    """
-    Lấy nhiều giá trị ngôn ngữ cùng lúc dựa trên danh sách names, sử dụng giá trị mặc định nếu không cung cấp.
-
-    Args:
-        language (str, optional): Ngôn ngữ (ví dụ: 'vi'). Nếu None, dùng giá trị mặc định.
-        group (str, optional): Nhóm (ví dụ: 'tos'). Nếu None, dùng giá trị mặc định.
-        type (str, optional): Loại ('text' hoặc 'random'). Nếu None, dùng giá trị mặc định.
-        names (list, optional): Danh sách tên giá trị (ví dụ: ['123', '124', '125']). Bắt buộc.
-
-    Returns:
-        dict: Dictionary với key là name và value là giá trị ngôn ngữ hoặc chuỗi rỗng nếu không tìm thấy.
-
-    Raises:
-        UserWarning: Nếu thiếu tham số cần thiết hoặc dữ liệu không tồn tại.
-    """
+    """Retrieve multiple language values at once based on a list of names."""
     params = {
         "language": language if language is not None else _DEFAULTS["language"],
         "group": group if group is not None else _DEFAULTS["group"],
@@ -347,26 +307,25 @@ async def batch(language=None, group=None, type=None, names=None):
     }
 
     if params["language"] is None:
-        warnings.warn("Thiếu tham số 'language' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'language' parameter and no default value provided", UserWarning, stacklevel=2)
         return {}
     if params["group"] is None:
-        warnings.warn("Thiếu tham số 'group' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'group' parameter and no default value provided", UserWarning, stacklevel=2)
         return {}
     if params["type"] is None:
-        warnings.warn("Thiếu tham số 'type' và không có giá trị mặc định", UserWarning, stacklevel=2)
+        warnings.warn("Missing 'type' parameter and no default value provided", UserWarning, stacklevel=2)
         return {}
     if not params["names"] or not isinstance(params["names"], list):
-        warnings.warn("Thiếu hoặc tham số 'names' không hợp lệ. Phải cung cấp danh sách names", UserWarning, stacklevel=2)
+        warnings.warn("Missing or invalid 'names' parameter. Must provide a list of names", UserWarning, stacklevel=2)
         return {}
 
-    result = {name: "" for name in params["names"]}  # Khởi tạo dictionary với giá trị rỗng
+    result = {name: "" for name in params["names"]}
 
     async with aiosqlite.connect(DB_PATH) as db:
         frame = inspect.currentframe().f_back
         filename = Path(frame.f_code.co_filename).name
         lineno = frame.f_lineno
 
-        # Kiểm tra bảng ngôn ngữ
         async with db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (params["language"],)) as cursor:
             table_exists = await cursor.fetchone()
         if not table_exists:
@@ -374,13 +333,11 @@ async def batch(language=None, group=None, type=None, names=None):
             warnings.warn(message, UserWarning, stacklevel=2)
             return result
 
-        # Kiểm tra type hợp lệ
         if params["type"] not in ['text', 'random']:
             message = f"Invalid type: '{params['type']}' (must be 'text' or 'random')"
             warnings.warn(message, UserWarning, stacklevel=2)
             return result
 
-        # Kiểm tra group
         async with db.execute(f"SELECT DISTINCT \"group\" FROM {params['language']}") as cursor:
             groups = [row[0] for row in await cursor.fetchall()]
         if params["group"] not in groups:
@@ -393,7 +350,6 @@ async def batch(language=None, group=None, type=None, names=None):
             warnings.warn(message, UserWarning, stacklevel=2)
             return result
 
-        # Truy vấn tất cả names trong một truy vấn
         placeholders = ",".join("?" for _ in params["names"])
         query = f"""
             SELECT name, value FROM {params['language']}
@@ -406,7 +362,6 @@ async def batch(language=None, group=None, type=None, names=None):
                 for name, value in rows:
                     result[name] = value
             else:
-                # Nhóm các giá trị theo name cho type="random"
                 random_values = {}
                 for name, value in rows:
                     if name not in random_values:
@@ -415,13 +370,16 @@ async def batch(language=None, group=None, type=None, names=None):
                 for name in random_values:
                     result[name] = random.choice(random_values[name]) if random_values[name] else ""
 
-        # Kiểm tra các name không tìm thấy
+        cursor = await db.execute(f"""
+            SELECT name FROM {params['language']} WHERE "group" = ? AND type = ?
+        """, (params["group"], params["type"]))
+        rows = await cursor.fetchall()
+        available_names = [row[0] for row in rows]
+
         for name in params["names"]:
             if result[name] == "":
-                similar_names = difflib.get_close_matches(name, 
-                    [n async for n in (await db.execute(f"SELECT name FROM {params['language']} WHERE \"group\" = ? AND type = ?", 
-                    (params["group"], params["type"]))).fetchall()], n=1, cutoff=0.6)
-                suggestion = f". Did you mean '{similar_names[0][0]}'?" if similar_names else ""
+                similar_names = difflib.get_close_matches(name, available_names, n=1, cutoff=0.6)
+                suggestion = f". Did you mean '{similar_names[0]}'?" if similar_names else ""
                 message = f"No data found for name '{name}' with group '{params['group']}' and type '{params['type']}' in language '{params['language']}'{suggestion}"
                 warnings.warn(message, UserWarning, stacklevel=2)
 
